@@ -3,12 +3,13 @@ QCAM II working group on microswimmers
 
 ## Objectives
 
-- [ ] Goal 1
+- [ ] Distribution of swimmers in FDM
   - [ ] Task 1
   - [ ] Task 2
   - [ ] Task 3
-- [ ] Goal 2
-- [ ] Goal 3
+- [ ] Effective diffusivity
+- [ ] Rotlets
+- [ ] Viscoelastic networks
 
 ## Background info
 
