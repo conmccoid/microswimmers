@@ -1,10 +1,12 @@
 %% force doublet script
 clear all
+profile on
 
 d=1.0; %regularization parameter
 
 
-T=20.00;
+% T=20.00;
+T = 0.1;
 dt=1e-3;
 Nt=ceil(T/dt);
 ppfac=0.0; % pusher = 1, puller = -1.0
@@ -185,34 +187,38 @@ end
 
 
 
-%% Plotting
-
-for k=1:j
-    X = x_store(:,1,k);
-    Y = x_store(:,2,k);
-    Z = x_store(:,3,k);
-
-    U = beta_store(:,1,k);
-    V = beta_store(:,2,k);
-    W = beta_store(:,3,k);
-
-    clf
-    figure(1)
-    quiver3(X,Y,Z,U,V,W,'LineWidth',1.5)
-
-    axis equal
-    grid on
-
-    xlabel('x')
-    ylabel('y')
-    zlabel('z')
-
-    xlim([-1,7])
-    ylim([-3,3])
-    zlim([-3,3])
-    title(['Frame ',num2str(k)])
-    % pause
-    drawnow
-
-
-end
+% %% Plotting
+% 
+% for k=1:j
+%     X = x_store(:,1,k);
+%     Y = x_store(:,2,k);
+%     Z = x_store(:,3,k);
+% 
+%     U = beta_store(:,1,k);
+%     V = beta_store(:,2,k);
+%     W = beta_store(:,3,k);
+% 
+%     clf
+%     figure(1)
+%     quiver3(X,Y,Z,U,V,W,'LineWidth',1.5)
+% 
+%     axis equal
+%     grid on
+% 
+%     xlabel('x')
+%     ylabel('y')
+%     zlabel('z')
+% 
+%     xlim([-1,7])
+%     ylim([-3,3])
+%     zlim([-3,3])
+%     title(['Frame ',num2str(k)])
+%     % pause
+%     drawnow
+% 
+% 
+% end
+% 
+% 
+profile viewer
+profile off

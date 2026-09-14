@@ -10,12 +10,12 @@ N=size(x_fd,1);
 
 for i=1:N
     r=vecnorm(x_fd(i,:)-x_sd,2,2);
-
+    
     x=x_fd(i,:)-x_sd;
 
     rxx=cross(beta_sd,x,2);    
     rdotx=dot(beta_sd,x,2);
-
+    
     R=(d.^2+r.^2).^(1/2);
     R5=R.^(5);
     R7=R.^(7);

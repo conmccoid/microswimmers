@@ -24,7 +24,7 @@ N=size(x_fd,1);
 
 for i=1:N
     r=vecnorm(x_fd(i,:)-x_sd,2,2);
-
+    
     x=x_fd(i,:)-x_sd;
 
     rxx=cross(beta_sd,x,2);
@@ -35,7 +35,7 @@ for i=1:N
     bdotr=dot(ones(N,1)*beta_fd(i,:),beta_sd,2);
     bdotx=dot(ones(N,1)*beta_fd(i,:),x,2);
     rdotx=dot(beta_sd,x,2);
-
+    
     R=(d.^2+r.^2).^(1/2);
     R2=R.*R;
     R3=R.*R2;

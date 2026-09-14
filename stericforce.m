@@ -11,7 +11,10 @@ f_s=zeros(size(x_fd));
 N=size(x_fd,1);
 
 for i=1:N
+    x=x_fd(i,:)-x_fd;
     x_dist=vecnorm(x_fd(i,:)-x_fd,2,2);
     [tol_idx] = find(x_dist<tol);
-    f_s(tol_idx,:)=f_s(tol_idx,:)+kappa*(x_fd(i,:)-x_fd(tol_idx,:)+tol);
+    tol_idx(tol_idx==i)=[];
+    f_s(i,:)=sum(kappa.*(tol-x_dist(tol_idx)).*x(tol_idx,:)./x_dist(tol_idx),1);
+    % f_s(i,:)=f_s(tol_idx,:)+kappa.*(tol-x_dist(tol_idx)).*x(tol_idx,:)./x_dist(tol_idx);
 end

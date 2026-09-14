@@ -20,7 +20,10 @@ N=size(x_fd,1);
 M=size(x_s,1);
 for i=1:N
     r=vecnorm(x_fd(i,:)-x_s,2,2);
-    
+    R=sqrt(r.^2+d.^2);
+    R2=R.*R;
+    R3=R2.*R;
+    R5=R2.*R3;
     x=x_fd(i,:)-x_s;
     
     % dx=x_fd(i,1)-x_s(:,1);
@@ -28,19 +31,21 @@ for i=1:N
     % dz=x_fd(i,3)-x_s(:,3);
     % fdotx=f_s(:,1).*dx+f_s(:,2).*dy+f_s(:,3).*dz;
     % 
-    bxx=cross(beta_fd,x,2);
-    bxxxb=cross(bxx,beta_fd,2);
-    bxf=cross(beta_fd,f_s,2);
-    bxfxb=cross(bxf,beta_fd,2);
+    bxx=cross(ones(N,1)*beta_fd(i,:),x,2);
+    bxxxb=cross(bxx,ones(N,1)*beta_fd(i,:),2);
+    bxf=cross(ones(N,1)*beta_fd(i,:),f_s,2);
+    bxfxb=cross(bxf,ones(N,1)*beta_fd(i,:),2);
     
-    bdotf=dot(beta_fd,f_s,2);
-    bdotx=dot(beta_fd,x,2);
+    bdotf=dot(ones(N,1)*beta_fd(i,:),f_s,2);
+    bdotx=dot(ones(N,1)*beta_fd(i,:),x,2);
     fdotx=dot(f_s,x,2);
     
+    Fact1=(1/8).*pi^(-1).*(bdotf./R3-3.*bdotx.*fdotx./R5).*bxxxb;
+    Fact2=(1/8).*pi^(-1).*(1./R3+3.*d.^(2)./R5).*bdotx.*bxfxb;
+    
+    % [H1,H2,J0,J1,J2,J3,J0por,J1por,J2por,J3por,H10]=forcedoubletfunctions_72blob(r,d);
 
-    [H1,H2,J0,J1,J2,J3,J0por,J1por,J2por,J3por,H10]=forcedoubletfunctions_72blob(r,d);
-
-    u_betas(i,:)=sum(bxxxb.*(bdotf.*H2-bdotx.*fdotx.*J3)-bxfxb.*(H2+J1).*bdotx,1)';
+    u_betas(i,:)=sum(Fact1-Fact2,1)';
     % for j=1:M
     %     betadotx=beta(i,1)*dx(j)+
     %     u_betas(i,1)=u_betas(i,1)+f_s(j,1)*H1(j)+ fdotx(j)*dx(j)*H2(j);
