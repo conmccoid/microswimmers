@@ -26,10 +26,13 @@ for i=1:N
     
     x=x_fd(i,:)-x_sd;
     
-    bxx=cross(ones(N,1)*beta_fd(i,:),x,2);
-    bxxxb=cross(bxx,ones(N,1)*beta_fd(i,:),2);
-    bxr=cross(ones(N,1)*beta_fd(i,:),beta_sd,2);
-    bxrxb=cross(bxr,ones(N,1)*beta_fd(i,:),2);
+    beta_i = beta_fd(i,:);
+    bxxxb = norm(beta_i)*x - (x*beta_i')*beta_i;
+    bxrxb = norm(beta_i)*beta_sd - (beta_sd*beta_i')*beta_i;
+    % bxx=cross(ones(N,1)*beta_fd(i,:),x,2);
+    % bxxxb=cross(bxx,ones(N,1)*beta_fd(i,:),2);
+    % bxr=cross(ones(N,1)*beta_fd(i,:),beta_sd,2);
+    % bxrxb=cross(bxr,ones(N,1)*beta_fd(i,:),2);
     
     bdotr=dot(ones(N,1)*beta_fd(i,:),beta_sd,2);
     rdotx=dot(beta_sd,x,2);

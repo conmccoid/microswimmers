@@ -26,9 +26,13 @@ for i=1:N
     r=vecnorm(x_fd(i,:)-x_sd,2,2);
     
     x=x_fd(i,:)-x_sd;
-
-    rxx=cross(beta_sd,x,2);
-    bxrxx=cross(ones(N,1)*beta_fd(i,:),rxx,2);
+    
+    beta_i = beta_fd(i,:);
+    bdotr = beta_sd * beta_i';
+    bdotx = x * beta_i';
+    bxrxx = bdotx.*beta_sd - bdotr.*x;
+    % rxx=cross(beta_sd,x,2);
+    % bxrxx=cross(ones(N,1)*beta_fd(i,:),rxx,2);
     bxrxxxb=cross(bxrxx,ones(N,1)*beta_fd(i,:),2);
     rxb=cross(beta_sd,ones(N,1)*beta_fd(i,:),2);
 
