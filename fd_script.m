@@ -9,7 +9,7 @@ d=1.0; %regularization parameter
 T = 0.1;
 dt=1e-3;
 Nt=ceil(T/dt);
-ppfac=0.0; % pusher = 1, puller = -1.0
+ppfac=-1.0; % pusher = 1, puller = -1.0
 
 
 q0=4*pi*ppfac; % stresslet strength
@@ -73,7 +73,7 @@ for n=1:Nt
     % compute velocity and dbeta based off point forces 
     u_r = rotletvelocity(x_fd,beta_fd,d,r0,Cr);
     u_betar = rotletbeta(x_fd,beta_fd,d,r0,Cr);
-    
+
     x_fd=x_fd+dt.*(u_s+u_fd+u_r);
     beta_fd=beta_fd+dt.*(u_betas+u_betafd+u_betar);
     beta_fd=beta_fd./(vecnorm(beta_fd,2,2));

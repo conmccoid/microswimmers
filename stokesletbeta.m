@@ -31,18 +31,13 @@ for i=1:N
     % dz=x_fd(i,3)-x_s(:,3);
     % fdotx=f_s(:,1).*dx+f_s(:,2).*dy+f_s(:,3).*dz;
 
-    beta_i = beta_fd(i,:);
-    bdotx = x*beta_i';
-    bdotf = f_s*beta_i';
-    bxxxb = norm(beta_i)*x - bdotx*beta_i;
-    bxfxb = norm(beta_i)*f_s - bdotf*beta_i;
-    % bxx=cross(ones(N,1)*beta_fd(i,:),x,2);
-    % bxxxb=cross(bxx,ones(N,1)*beta_fd(i,:),2);
-    % bxf=cross(ones(N,1)*beta_fd(i,:),f_s,2);
-    % bxfxb=cross(bxf,ones(N,1)*beta_fd(i,:),2);
+    bxx=cross(ones(N,1)*beta_fd(i,:),x,2);
+    bxxxb=cross(bxx,ones(N,1)*beta_fd(i,:),2);
+    bxf=cross(ones(N,1)*beta_fd(i,:),f_s,2);
+    bxfxb=cross(bxf,ones(N,1)*beta_fd(i,:),2);
     
-    % bdotf=dot(ones(N,1)*beta_fd(i,:),f_s,2);
-    % bdotx=dot(ones(N,1)*beta_fd(i,:),x,2);
+    bdotf=dot(ones(N,1)*beta_fd(i,:),f_s,2);
+    bdotx=dot(ones(N,1)*beta_fd(i,:),x,2);
     fdotx=dot(f_s,x,2);
     
     Fact1=(1/8).*pi^(-1).*(bdotf./R3-3.*bdotx.*fdotx./R5).*bxxxb;
