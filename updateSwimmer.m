@@ -33,9 +33,10 @@ cross_bbb = norm(beta_i)*beta_list - (beta_list*beta_i')*beta_i;
 cross_bbx = dot_bx.*beta_list - dot_bb.*x;
 
 % cross products
-cross_xb = cross(beta_list, x, 2);
+% cross_xb = cross(beta_list, x, 2);
+cross_xb = beta_list(:,[2,3,1]).*x(:,[3,1,2]) - beta_list(:,[3,1,2]).*x(:,[2,3,1]);
 cross_bbbx = cross_bbx(:,[2,3,1]).*beta_i([3,1,2]) - cross_bbx(:,[3,1,2]).*beta_i([2,3,1]);
-cross_bb = beta_list(:, [2 3 1]) .* beta_i([3 1 2]) - beta_list(:, [3 1 2]) .* beta_i([2 3 1]);
+cross_bb = beta_list(:,[2,3,1]).*beta_i([3,1,2]) - beta_list(:,[3,1,2]).*beta_i([2,3,1]);
 
 % velocity due to steric forces
 u_s = f_s.*(1 + d^2./R.^2) + dot(f_s,x,2).*x./R.^3;
@@ -43,26 +44,26 @@ u_s = sum(u_s./R,1)' ./ (8*pi);
 
 % change in direction due to steric forces
 beta_s = cross_bxb.*(dot_bf - 3*dot_bx.*dot_fx./R.^2) - cross_bfb.*dot_bx.*(1 + 3*d^2./R.^2);
-beta_s = sum(beta_s./R.^3,1)'./(8*pi);
+beta_s = sum(beta_s./R.^3,1)'/(8*pi);
 
 % velocity due to force doublets
 u_fd = q0*(-x + 3*dot_bx.^2.*x./R.^2 + 3*dot_bx*beta_i*d^2./R.^2) + ...
     b0 * (-3*dot_bx.*x./R.^2 + (R.^2 - 3*d^2)*beta_i./R.^2);
-u_fd = sum(u_fd./R.^3,1)'./(8*pi);
+u_fd = sum(u_fd./R.^3,1)'/(8*pi);
 
 % change in direction due to force doublets
 J1 = 6*dot_bb.*dot_xb + 3*(1 - 5*dot_xb.^2./R.^2).*dot_bx;
-J2 = 3*d^2*(dot_bb - 5*dot_xb.*dot_bx./R.^2);
+J2 = 3*d^2*(dot_bb - 5*dot_xb.*dot_bx./R.^2); % J2 and J3 use the same base vector, consider combining the two
 J3 = -3*dot_bb + 15*dot_xb.*dot_bx./R.^2;
 J4 = dot_bx.*(-3 + 15*d^2./R.^2);
 beta_fd = (-q0*J1 + b0*J3).*cross_bxb + (-q0*J2 + b0*J4).*cross_bbb;
-beta_fd = sum(beta_fd./R.^5,1)'./(8*pi);
+beta_fd = sum(beta_fd./R.^5,1)'/(8*pi);
 
 % velocity due to rotlets
 u_r = dot_xb.*cross_xb.*(6 + 15*d^2./R.^2) - Cr*cross_xb*15*d^3./R.^2;
-u_r = r0*sum(u_r./R.^5,1)'./(8*pi);
+u_r = r0*sum(u_r./R.^5,1)'/(8*pi);
 
 % change in direction due to rotlets
 J1 = cross_bbbx.*( (6 + 15*d^2./R.^2).*dot_bb - dot_bx.*(dot_xb.*(30./R.^2 + 105*d^2./R.^4) - Cr*105*d^3./R.^4));
 J2 = cross_bb.*(dot_xb.*(6 + 15*d^2./R.^2) - Cr*15*d^3./R.^2);
-beta_r = r0*sum((J1+J2)./R.^5,1)'./(8*pi);
+beta_r = r0*sum((J1+J2)./R.^5,1)'/(8*pi);
