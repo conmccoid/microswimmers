@@ -79,3 +79,14 @@ fclose(fileID);
 ### Visualizing in ParaView
 
 Use the 'Glyph' filter.
+
+## Notes
+
+### FMM
+
+How to implement:
+- break domain into octree of boxes
+- for each box (leaf to root) calculate aggregate of all agents in box (requires a lot of calculus)
+- for each agent calculate effect of all agents in current and neighbouring boxes, and add aggregated effects
+
+Profiles of effects from distant agents shows a need for farfield effects, but the cost of FMM isn't expected to reap benefits until the number of agents reaches at least 10^3, more likely 10^5.
