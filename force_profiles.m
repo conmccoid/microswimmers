@@ -104,3 +104,41 @@ title('\beta_{fd}')
 subplot(2,3,6)
 contourf(dir_list,dir_list,mag_br)
 title('\beta_r')
+
+%% Varying number of other swimmers
+num_list = 2.^(0:10);
+dist = 10;
+dir1 = pi/4;
+dir2 = 11*pi/6; % relative angle between test particles
+for ind = 1:length(num_list)
+    num = num_list(ind);
+    x_list = zeros(num+1,3); x_list(2:end,1)=dist;
+    beta_list = zeros(num+1,3); beta_list(1,:) = [sin(dir1),cos(dir1),0];
+    for i=1:ind
+        beta_list(i+1,:) = [sin(dir2),cos(dir2),0];
+    end
+    
+    f_s = stericforce(x_list, kappa, tol);
+    [u_s, beta_s, u_fd, beta_fd, u_r, beta_r] = updateSwimmer(1,x_list,beta_list,f_s, d, q0, b0, r0, Cr);
+    mag_f(ind) = norm(f_s(1,:));
+    mag_us(ind)= norm(u_s);
+    mag_uf(ind)= norm(u_fd);
+    mag_ur(ind)= norm(u_r);
+    mag_bs(ind)= norm(beta_s);
+    mag_bf(ind)= norm(beta_fd);
+    mag_br(ind)= norm(beta_r);
+end
+
+%% Number profiles
+subplot(3,1,3)
+loglog(num_list, mag_f,'k.--','linewidth',2)
+xlabel('Number of agents')
+ylabel('Steric force magnitude')
+subplot(3,1,2)
+loglog(num_list, mag_us, 'r.--', num_list, mag_uf, 'bo--', num_list, mag_ur, 'm^--','linewidth',2)
+ylabel('Change in velocity')
+legend('Steric','Force doublets','Rotlets')
+subplot(3,1,1)
+loglog(num_list, mag_bs, 'r.--', num_list, mag_bf, 'bo--', num_list, mag_br, 'm^--','linewidth',2)
+ylabel('Change in direction')
+legend('Steric','Force doublets','Rotlets')
